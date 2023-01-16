@@ -33,7 +33,7 @@
                     <input class="form-control"  maxlength="10" minlength="6" v-model="phone"/>
                     <h4>Электронная почта</h4>
                     <!--Поле для ввода электронной почты-->
-                    <input class="form-control"  v-model="email"/>
+                    <input v-model="email" @input="validateMail" class="form-control" type="text" maxlength="35">
                     <h4>Образование</h4>
                     <!--Поле для выбора степени образования-->
                     <select class="form-control" v-model="education">
@@ -93,7 +93,10 @@
             <p> <strong>Контактная информация</strong></p>
             <div v-if="phone > 100000"><p>Телефон: {{ phone }}</p></div>
             <div v-else class="text-danger"><p>Введите корректный телефон, от 6 до 10 цифр</p></div>
-            <p>Электронная почта: {{ email }}</p>
+            <div v-if=" (email == ''|| erMail.length > 0)">
+                <p class="form-input my-3">Введите почту корректно. Например example@mail.ru</p>
+            </div>
+            <p class="form-input my-3" v-else>{{ email }} </p>
             </div>
             </div>
             
@@ -150,6 +153,15 @@ export default {
         specialization:'',
         graduation:'',
     }
+  },
+  methods: {
+    validateMail() {
+            this.erMail = '';
+            if (!(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{1,}$/.test(this.email))) {
+                this.erMail += 'Введите почту корректно. Например example@mail.ru';
+            }
+
+        },
   }
 }
 </script>
